@@ -22,9 +22,7 @@
               </a>
             </td>
             <td>
-              <a href="/">
-                <button type="button" class="btn btn-primary">Xóa</button>
-              </a>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#delete-course-modal">Xóa</button>
             </td>
           </tr>
         {{/each}}
@@ -32,3 +30,47 @@
     </table>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-course-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa khóa học?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Bạn chắn chắn muốn xóa khóa học này?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" id="btn-delete-course" class="btn btn-danger">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-course-form" method="post"></form>
+
+<script>
+  const deleteCourseModal = document.getElementById('delete-course-modal')
+  if (deleteCourseModal) {
+    let courseId 
+    const deleteForm = document.forms['delete-course-form']
+    const btnDeleteCourse = document.getElementById('btn-delete-course')
+
+    deleteCourseModal.addEventListener('show.bs.modal', event => {
+      // Button that triggered the modal
+      const button = event.relatedTarget
+      // Extract info from data-bs-* attributes
+      courseId = button.getAttribute('data-bs-id')
+    })
+
+    // When delete course button clicked
+    btnDeleteCourse.onclick = function() {
+      deleteForm.action = `/courses/${courseId}?_method=DELETE`
+      deleteForm.submit()
+    }
+  }
+</script>

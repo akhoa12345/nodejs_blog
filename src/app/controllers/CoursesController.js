@@ -51,8 +51,18 @@ class CoursesController {
   // [PUT] /courses/:id
   async update(req, res, next) {
     try {
-      Course.findByIdAndUpdate(req.params.id, req.body).exec();
+      await Course.findByIdAndUpdate(req.params.id, req.body).exec();
       res.redirect("/me/stored/courses");
+    } catch (next) {
+      console.log("Lỗi: ", next);
+    }
+  }
+
+  // [DELETE] /courses/:id
+  async delete(req, res, next) {
+    try {
+      await Course.findByIdAndDelete(req.params.id);
+      res.redirect("back");
     } catch (next) {
       console.log("Lỗi: ", next);
     }
