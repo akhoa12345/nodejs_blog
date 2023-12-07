@@ -12,7 +12,7 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Tên khóa học </th>
-          <th scope="col" colspan="3">Thời gian tạo</th>
+          <th scope="col" colspan="3">Thời gian xóa</th>
         </tr>
       </thead>
       <tbody>
@@ -20,7 +20,7 @@
           <tr>
             <th scope="row">{{sum @index 1}}</th>
             <td>{{this.name}}</td>
-            <td>{{this.createdAt}}</td>
+            <td>{{this.deletedAt}}</td>
             <td>
               <button type="button" class="btn btn-primary btn-restore" data-id="{{this._id}}">Khôi phục</button>
             </td>
