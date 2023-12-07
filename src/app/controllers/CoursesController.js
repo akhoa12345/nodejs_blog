@@ -87,6 +87,22 @@ class CoursesController {
       console.log('Lỗi: ', next);
     }
   }
+
+  // [POST] /courses/handle-form-actions
+  async handleFormActions(req, res, next) {
+    switch (req.body.action) {
+      case 'delete':
+        try {
+          await Course.delete({ _id: {$in: req.body.courseIds} });
+          res.redirect('back');
+        } catch (next) {
+          console.log('Lỗi: ', next);
+        }
+        break;
+      default:
+        res.json({ message: 'Action invalid!' });
+    }
+  }
 }
 
 module.exports = new CoursesController();
