@@ -1,6 +1,11 @@
 <div class="mt-4">
   <div class="container">
-    <h3>Khóa học của tôi</h3>
+    <div>
+      <h3>Khóa học của tôi</h3>
+      <a href="/me/trash/courses">
+        <button type="button" class="btn btn-primary">Thùng rác</button>
+      </a>
+    </div>
 
     <table class="table mt-4">
       <thead>
@@ -22,7 +27,14 @@
               </a>
             </td>
             <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#delete-course-modal">Xóa</button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#delete-course-modal">Xóa</button>
+            </td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="5" class="text-center" >
+              Bạn chưa đăng khóa học nào.
+              <a href="/courses/create">Đăng khóa học</a>
             </td>
           </tr>
         {{/each}}

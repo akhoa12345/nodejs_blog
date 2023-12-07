@@ -1,25 +1,25 @@
-const Course = require("../models/Course");
+const Course = require('../models/Course');
 const {
   multipleMongooseToObject,
   mongooseToObject,
-} = require("../../util/mongoose");
+} = require('../../util/mongoose');
 
 class CoursesController {
   // [GET] /courses/:slug
   async show(req, res, next) {
     try {
       const course = await Course.findOne({ slug: req.params.slug }).exec();
-      res.render("courses/show", {
+      res.render('courses/show', {
         course: mongooseToObject(course),
       });
     } catch (next) {
-      console.log("Có lỗi");
+      console.log('Có lỗi');
     }
   }
 
   // [GET] /courses/create
   create(req, res, next) {
-    res.render("courses/create");
+    res.render('courses/create');
   }
 
   // [POST] /courses/store
@@ -30,9 +30,9 @@ class CoursesController {
       await Course.create(formData);
 
       // res.send("Gửi Form thành công")
-      res.redirect("/");
+      res.redirect('/me/stored/courses');
     } catch (next) {
-      console.log("Error: " + next);
+      console.log('Error: ' + next);
     }
   }
 
@@ -40,11 +40,11 @@ class CoursesController {
   async edit(req, res, next) {
     try {
       const course = await Course.findById(req.params.id).exec();
-      res.render("courses/edit", {
+      res.render('courses/edit', {
         course: mongooseToObject(course),
       });
     } catch (next) {
-      console.log("Lỗi: ", next);
+      console.log('Lỗi: ', next);
     }
   }
 
@@ -52,19 +52,39 @@ class CoursesController {
   async update(req, res, next) {
     try {
       await Course.findByIdAndUpdate(req.params.id, req.body).exec();
-      res.redirect("/me/stored/courses");
+      res.redirect('/me/stored/courses');
     } catch (next) {
-      console.log("Lỗi: ", next);
+      console.log('Lỗi: ', next);
     }
   }
 
   // [DELETE] /courses/:id
   async delete(req, res, next) {
     try {
-      await Course.findByIdAndDelete(req.params.id);
-      res.redirect("back");
+      await Course.delete({ _id: req.params.id });
+      res.redirect('back');
     } catch (next) {
-      console.log("Lỗi: ", next);
+      console.log('Lỗi: ', next);
+    }
+  }
+
+  // [DELETE] /courses/:id/force
+  async forceDelete(req, res, next) {
+    try {
+      await Course.findByIdAndDelete({ _id: req.params.id });
+      res.redirect('back');
+    } catch (next) {
+      console.log('Lỗi: ', next);
+    }
+  }
+
+  // [PATCH] /courses/:id/restore
+  async restore(req, res, next) {
+    try {
+      await Course.restore({ _id: req.params.id });
+      res.redirect('back');
+    } catch (next) {
+      console.log('Lỗi: ', next);
     }
   }
 }
