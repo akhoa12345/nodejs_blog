@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-updater');
 const mongooseDelete = require('mongoose-delete');
+const { AutoIncrementID, AutoIncrementIDOptions } = require(
+  '@typegoose/auto-increment'
+);
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const CourseSchema = new Schema(
   {
+    _id: { type: Number },
     name: { type: String, required: true },
     description: { type: String },
     image: { type: String },
@@ -19,7 +23,7 @@ const CourseSchema = new Schema(
 );
 
 // Custom query helpers
-CourseSchema.query.sortable = async function(req) {
+CourseSchema.query.sortable = async function (req) {
   if (req.query.hasOwnProperty('_sort')) {
     const isValidType = ['asc', 'desc'].includes(req.query.type);
     return await this.sort({
@@ -28,7 +32,7 @@ CourseSchema.query.sortable = async function(req) {
   }
 
   return this;
-}
+};
 
 // Add plugins
 mongoose.plugin(slug);
@@ -36,5 +40,6 @@ CourseSchema.plugin(mongooseDelete, {
   deletedAt: true,
   overrideMethods: 'all',
 });
+CourseSchema.plugin(AutoIncrementID, {});
 
 module.exports = mongoose.model('Course', CourseSchema);
